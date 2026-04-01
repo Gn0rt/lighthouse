@@ -1,0 +1,95 @@
+#header {
+  width: 100%;
+  background-color: #0959a1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account {
+  margin-right: 10px;
+  color: white;
+  font-size: 16px;
+  padding: 5px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+}
+
+.logo {
+  margin-left: 10px;
+}
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo a img {
+  height: 50px;
+  border-radius: 50%;
+}
+.logo a span {
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 10px;
+  vertical-align: middle;
+  letter-spacing: 2px;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item:hover {
+  .sub-menu {
+    display: block;
+  }
+}
+
+.lists-menu {
+  display: flex;
+  color: white;
+  list-style: none;
+  margin: 0;
+  gap: 40px;
+}
+
+.item-sub-menu {
+  position: relative;
+  z-index: 99;
+}
+
+.item-sub-menu a {
+  text-decoration: none;
+  color: white;
+}
+
+.item-sub-menu::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  width: 100px;
+  height: 15px;
+  background-color: transparent;
+}
+
+.sub-menu {
+  position: absolute;
+  background-color: #337ab7;
+  list-style: none;
+  top: 30px;
+  width: 200px;
+  display: none;
+  padding: 0;
+}
+
+.sub-item {
+  padding: 8px 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sub-item:hover {
+  background-color: #245785;
+}

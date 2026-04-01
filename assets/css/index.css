@@ -1,0 +1,8 @@
+﻿#map {
+  position: absolute !important;
+  top: 50px;
+  left: 0;
+  height: calc(100vh - 50px); /* trừ phần header */
+  width: 100%;
+  z-index: 1;
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giám sát ngọn hải đăng</title>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- DataTables -->
+    <script src="./assets/lib/datatables/datatables.min.js"></script>
+    <link rel="stylesheet" href="./assets/lib/datatables/datatables.min.css" />
+    <link rel="stylesheet" href="./assets/lib/datatables/style.css" />
+    <!-- Leaflet -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <!-- jQuery UI -->
+    <script src="~/js/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
+    <link
+      href="~/js/jquery-ui-1.14.1.custom/jquery-ui.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <link rel="stylesheet" href="./assets/css/header.css" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="logo">
+        <a href="/Home/Index">
+          <!-- <img src="~/images/logo.png" alt="Logo Company" /> -->
+          <span>AIS</span>
+        </a>
+      </div>
+
+      <div class="menu">
+        <ul class="lists-menu">
+          <li class="item item-sub-menu">
+            <a href="">Quản trị</a>
+            <ul class="sub-menu">
+              <li class="sub-item">
+                <a href="/Manage/Company">Quản trị công ty</a>
+              </li>
+              <li class="sub-item">
+                <a href="/Manage/User">Quản trị người dùng</a>
+              </li>
+              <li class="sub-item">
+                <a href="/Manage/Device">Quản trị thiết bị</a>
+              </li>
+            </ul>
+          </li>
+          <li class="item item-sub-menu">
+            <a href="">Báo cáo</a>
+            <ul class="sub-menu">
+              <li class="sub-item">
+                <a href="/Report/Index">Báo cáo hành trình</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-right: 10px">
+        <div style="display: flex; align-items: center; margin: 10px">
+          <div class="account">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div style="color: white">
+            <strong>Name</strong>
+          </div>
+        </div>
+        <a
+          id="btnLogout"
+          class="logout"
+          style="text-decoration: none; color: white; cursor: pointer"
+          >Đăng xuất</a
+        >
+      </div>
+    </header>
+    <div id="map"></div>
+    <script src="./assets/js/home.js"></script>
+  </body>
+</html>
