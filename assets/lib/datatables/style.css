@@ -3,6 +3,7 @@
   border-spacing: 0;
   clear: both;
   width: 100%;
+  table-layout: fixed;
 }
 
 td,

@@ -39,10 +39,25 @@
               placeholder=" "
             />
             <label for="password">Mật khẩu</label>
+            <a id="togglePassword"><i class="fa-solid fa-eye"></i></a>
           </div>
           <button id="btnLogin" type="submit">Đăng nhập</button>
         </form>
       </div>
     </div>
+
+    <script>
+      const togglePassword = document.querySelector("#togglePassword");
+      const passwordInput = document.querySelector("#password");
+
+      togglePassword.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+        this.querySelector("i").classList.toggle("fa-eye-slash");
+      });
+    </script>
   </body>
 </html>

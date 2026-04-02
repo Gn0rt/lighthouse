@@ -1,6 +1,6 @@
 #header {
   width: 100%;
-  background-color: #0959a1;
+  background-color: var(--primary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,15 +19,18 @@
 .logo {
   margin-left: 10px;
 }
+
 .logo a {
   display: flex;
   align-items: center;
   text-decoration: none;
 }
+
 .logo a img {
   height: 50px;
   border-radius: 50%;
 }
+
 .logo a span {
   color: white;
   font-size: 30px;
@@ -76,7 +79,7 @@
 
 .sub-menu {
   position: absolute;
-  background-color: #337ab7;
+  background-color: var(--primary-color);
   list-style: none;
   top: 30px;
   width: 200px;
@@ -91,5 +94,15 @@
 }
 
 .sub-item:hover {
-  background-color: #245785;
+  background-color: var(--primary-dark-color);
+}
+
+#btnLogout {
+  text-decoration: none;
+  color: var(--white-color);
+  cursor: pointer;
+}
+
+#btnLogout:hover {
+  color: #ccc;
 }

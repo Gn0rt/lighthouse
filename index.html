@@ -84,18 +84,94 @@
             <i class="fa-solid fa-user"></i>
           </div>
           <div style="color: white">
-            <strong>Name</strong>
+            <strong>[-Name-]</strong>
           </div>
         </div>
-        <a
-          id="btnLogout"
-          class="logout"
-          style="text-decoration: none; color: white; cursor: pointer"
-          >Đăng xuất</a
-        >
+        <a id="btnLogout" class="logout">Đăng xuất</a>
       </div>
     </header>
     <div id="map"></div>
+
+    <div id="log-container">
+      <div class="tabs">
+        <p class="tab active" data-tab="giam-sat">Giám sát</p>
+      </div>
+      <div id="giam-sat" class="giamsat tab-content active">
+        <form action="">
+          <div class="form-mmsi-control">
+            <label for="">MMSI: </label>
+            <input
+              type="text"
+              class="search-input"
+              id="mmsiValue"
+              placeholder="Nhập MMSI..."
+            />
+          </div>
+        </form>
+        <table id="log-table" class="userTable" style="width: 100%">
+          <thead style="font-size: 14px">
+            <tr>
+              <th>Icon</th>
+              <th>MMSI</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody style="font-size: 14px"></tbody>
+        </table>
+
+        <div class="lists">
+          <ul class="list-items">
+            <li class="item item-a">
+              <img src="./assets/image/lighthouse.png" alt="Icon" />
+              <span>Có tín hiệu: <span class="count count-off">0</span> </span>
+            </li>
+            <li class="item item-b">
+              <img src="./assets/image/lighthouse.png" alt="Icon" />
+              <span
+                >Mất tín hiệu:
+                <span class="count count-disconnect">0</span></span
+              >
+            </li>
+            <li>
+              <span id="count-device" style="margin-top: 0">0</span>
+              <span id="">Tổng thiết bị</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="device-info-window" class="floating-window" style="display: none">
+      <div class="window-header" id="window-header">
+        <span id="window-title">Thông tin tàu</span>
+        <button id="btn-close-window" class="btn-close-window">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      <div class="window-body">
+        <div class="info-row">
+          <span class="label">MMSI:</span>
+          <span class="value" id="win-mmsi">---</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tốc độ:</span>
+          <span class="value" id="win-speed">---</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Tọa độ:</span>
+          <span class="value" id="win-latlng">---</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Cập nhật:</span>
+          <span class="value" id="win-time">---</span>
+        </div>
+        <div class="info-row status-row">
+          <span class="label">Trạng thái:</span>
+          <span class="value" id="win-status">---</span>
+        </div>
+      </div>
+    </div>
+
     <script src="./assets/js/home.js"></script>
   </body>
 </html>

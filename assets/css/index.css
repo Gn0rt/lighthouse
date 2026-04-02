@@ -6,3 +6,287 @@
   width: 100%;
   z-index: 1;
 }
+#log-container {
+  position: absolute;
+  top: 60px;
+  left: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 5px;
+  width: 400px;
+  max-width: 100%;
+  max-height: 83vh;
+  /* overflow-y: auto; */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  font-family: Arial, sans-serif;
+}
+
+#log-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#log-table tbody tr:hover {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+.tabs {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 3px;
+}
+
+.tabs p {
+  margin: 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tab.active {
+  background-color: white;
+  color: #000;
+  font-weight: 600;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+#formLoTrinh > button:hover,
+#formLoTrinh > div > button:hover {
+  opacity: 0.8;
+}
+.form-datetime-control,
+.form-mmsi-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  background-color: #eee;
+  padding: 5px;
+  border-radius: 5px;
+}
+.form-datetime-control > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.form-datetime-control label,
+.form-mmsi-control label {
+  font-size: 14px;
+  width: 60px;
+}
+.form-datetime-control input {
+  font-size: 12px;
+  padding: 3px;
+  border: 1px solid #353a5f;
+  outline: none;
+  border-radius: 5px;
+  text-align: center;
+}
+.time-input {
+  width: 25%;
+}
+.date-input {
+  width: 70%;
+}
+.form-mmsi-control input {
+  font-size: 14px;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #353a5f;
+  outline: none;
+  border-radius: 5px;
+  /*        margin: 5px 0 10px 0;*/
+}
+
+#datefinish,
+.time-input {
+  /*    margin-top: 5px;*/
+}
+
+.route-tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#btnRefreshFollow,
+#btnPolylineAll,
+#btnDetailFollow,
+#btnSearchFollow {
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px;
+  background: linear-gradient(360deg, #0959a1, #9ebaf3);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#btnSearch:hover {
+  opacity: 0.8;
+}
+
+.lists {
+  margin-top: 10px;
+}
+
+.list-items {
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+
+.list-items li i {
+  font-size: 16px;
+}
+
+.list-items li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.list-items li span {
+  font-size: 13px;
+  text-align: center;
+  text-wrap: balance;
+}
+#count-device {
+  line-height: 12px;
+  border: 1px solid #000;
+  padding: 5px;
+  border-radius: 50%;
+}
+.item-a img,
+.item-b img,
+.item-c img {
+  height: 24px;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  font-size: 14px;
+}
+#tableFollow tbody tr {
+  cursor: pointer;
+}
+#tableFollow tbody tr:hover {
+  background-color: #d1ecf1 !important; /* Màu xanh nhạt, độ tương phản cao */
+  color: #000 !important;
+  font-weight: bold;
+}
+/* Style cho dòng đang active */
+#tableFollow tbody tr.active-row {
+  background-color: #ffc107 !important; /* Màu vàng đậm, độ tương phản cao */
+  color: #000 !important;
+  font-weight: bold;
+  transition: none;
+}
+
+@keyframes flash-green {
+  from {
+    background-color: #d4edda;
+  }
+
+  to {
+    background-color: inherit;
+  }
+}
+
+.flash-highlight {
+  animation: flash-green 1s ease-out;
+}
+
+.my-mmsi-tooltip {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #333;
+  color: #000;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-tooltip-top:before {
+  display: none;
+}
+
+.floating-window {
+  position: fixed;
+  top: 50%;
+  left: 60%;
+  width: 280px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  transform: translate(-50%, -50%);
+}
+
+.window-header {
+  padding: 10px 15px;
+  background: #0959a1;
+  color: white;
+  font-weight: bold;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-body {
+  padding: 15px;
+  font-size: 13px;
+  color: #333;
+}
+
+.btn-close-window {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.info-row {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 4px;
+}
+
+.info-row .label {
+  font-weight: bold;
+  color: #555;
+}
+
+.info-row .value {
+  color: #000;
+}

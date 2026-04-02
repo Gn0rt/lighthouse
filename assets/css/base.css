@@ -5,8 +5,30 @@
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
+/* Toàn bộ scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+/* Track (nền) */
+::-webkit-scrollbar-track {
+  background: var(--primary-dark-color); /* xanh biển đậm */
+}
+/* Thumb (thanh kéo) */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color); /* màu ánh đèn hải đăng */
+  border-radius: 6px;
+}
+
+/* Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light-color);
+}
 
 :root {
   --white-color: #fff;
   --black-color: #000;
+
+  --primary-color: #4a6fa5;
+  --primary-dark-color: #0b1d3a;
+  --primary-light-color: #9ebaf3;
 }
