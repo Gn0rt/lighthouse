@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- DataTables -->
+    <script src="./assets/lib/datatables/datatables.min.js"></script>
+    <link rel="stylesheet" href="./assets/lib/datatables/datatables.min.css" />
+    <link rel="stylesheet" href="./assets/lib/datatables/style.css" />
+
+    <!-- Css -->
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <link rel="stylesheet" href="./assets/css/header.css" />
+    <link rel="stylesheet" href="./assets/css/company.css" />
+    <title>Quản lý công ty</title>
+  </head>
+  <body>
+    <header id="header">
+      <div class="logo">
+        <a href="">
+          <!-- <img src="~/images/logo.png" alt="Logo Company" /> -->
+          <span>lighthose</span>
+        </a>
+      </div>
+
+      <div class="menu">
+        <ul class="lists-menu">
+          <li class="item item-sub-menu">
+            <a href="">Quản trị</a>
+            <ul class="sub-menu">
+              <li class="sub-item">
+                <a href="/Manage/Company">Quản trị công ty</a>
+              </li>
+              <li class="sub-item">
+                <a href="/Manage/User">Quản trị người dùng</a>
+              </li>
+              <li class="sub-item">
+                <a href="/Manage/Device">Quản trị thiết bị</a>
+              </li>
+            </ul>
+          </li>
+          <li class="item item-sub-menu">
+            <a href="">Báo cáo</a>
+            <ul class="sub-menu">
+              <li class="sub-item">
+                <a href="/Report/Index">Báo cáo sự kiên cảnh báo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="item item-sub-menu">
+            <a href="">Xem video trực tuyến</a>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display: flex; align-items: center; margin-right: 10px">
+        <div style="display: flex; align-items: center; margin: 10px">
+          <div class="account">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div style="color: white">
+            <strong>[-Name-]</strong>
+          </div>
+        </div>
+        <a id="btnLogout" class="logout">Đăng xuất</a>
+      </div>
+    </header>
+
+    <section id="content">
+      <div id="content-control">
+        <h3>Quản lý công ty</h3>
+        <div id="control-contain">
+          <div id="control-search">
+            <input
+              type="text"
+              id="searchInput"
+              class="input-search"
+              placeholder="Tìm kiếm công ty..."
+            />
+          </div>
+          <div id="control-action">
+            <button id="btnAddCompany" class="button">
+              <i class="fa-solid fa-plus"></i> Thêm mới
+            </button>
+            <button id="btnExportExcel" class="button">
+              <i class="fa-solid fa-file-excel"></i> Xuất Excel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-table">
+        <table id="companyTable" class="userTable">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên công ty</th>
+              <th>Địa chỉ</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div id="modal" class="modalCompany">
+      <div id="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Tiêu đề mặc định</h3>
+          <button id="closedModal">&times;</button>
+        </div>
+        <div class="modal-body" id="modalContent">
+          <form id="frmCompany">
+            <div class="form-group">
+              <label>Tên công ty</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Tên công ty..."
+              />
+            </div>
+            <div class="form-group">
+              <label>Địa chỉ</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Địa chỉ..."
+              />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="text" class="form-control" placeholder="Email..." />
+            </div>
+            <div class="form-group">
+              <label>Điện thoại</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại..."
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button id="saveCompany" class="button">Lưu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <script src="./assets/js/company.js"></script>
+  </body>
+</html>

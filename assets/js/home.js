@@ -1,184 +1,148 @@
 var map;
+let blinkInterval = null;
+var lighthouseGroup = L.featureGroup();
+var activeMarker = null;
 
+let lighthouseIcon = L.icon({
+  iconUrl: "/assets/image/lighthouse.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
+});
+const listLighthouses = [
+  {
+    id: 1,
+    name: "Hải đăng 1",
+    latitude: 15.422884140443102,
+    longitude: 109.14396262587107,
+  },
+  {
+    id: 2,
+    name: "Hải đăng 2",
+    latitude: 15.438623,
+    longitude: 109.189339,
+  },
+  {
+    id: 3,
+    name: "Hải đăng 3",
+    latitude: 15.328724,
+    longitude: 109.187622,
+  },
+  {
+    id: 4,
+    name: "Hải đăng 4",
+    latitude: 15.366467,
+    longitude: 109.287872,
+  },
+];
+function showDeviceWindow() {
+  $("#device-info-window").fadeIn();
+}
+
+function makeDraggable(elmnt) {
+  var pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  // Nếu có header thì kéo bằng header, nếu không thì kéo bằng cả body
+  var header = document.getElementById("window-header");
+  if (header) {
+    header.onmousedown = dragMouseDown;
+  } else {
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // Lấy vị trí chuột ban đầu
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // Tính toán vị trí mới
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // Gán vị trí mới cho element
+    elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+    elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+  }
+
+  function closeDragElement() {
+    // Dừng kéo khi thả chuột
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+function markerBlink(marker) {
+  marker.setOpacity(0.5);
+  setTimeout(() => {
+    marker.setOpacity(1);
+  }, 500);
+}
+function stopBlink() {
+  if (blinkInterval) {
+    clearInterval(blinkInterval);
+    blinkInterval = null;
+  }
+}
 $(document).ready(function () {
-  map = L.map("map").setView([10.762622, 106.660172], 13);
+  map = L.map("map").setView([15.422884140443102, 109.14396262587107], 13);
 
   L.tileLayer("http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}", {
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"],
   }).addTo(map);
-});
-const datas = [
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-  {
-    mmsi: "123456789",
-    latitude: 10.762622,
-    longitude: 106.660172,
-    lastReceive: "2024-06-01T12:34:56Z",
-  },
-];
-$(document).ready(function () {
-  const table = $("#log-table").DataTable({
-    data: datas,
-    searching: true,
-    autoWidth: false,
-    scrollY: "50vh",
-    scrollX: true,
-    scrollCollapse: true,
-    orderCellsTop: true, // Bắt buộc: Để nó biết dòng 1 là Header Sort, dòng 2 là cái khác
-    paging: false,
-    info: false,
-    rowId: "mmsi",
-    columns: [
-      {
-        data: null,
-        render: function (data, type, row, meta) {
-          return `<img src="./assets/image/lighthouse.png" style="width:24px;height:24px;" title="Speed: ${row.speed} | Last: ${row.lastReceive}"/>`;
-        },
-        orderable: false,
-        className: "col-fixed",
-        width: "50px",
-      },
-      {
-        data: "mmsi",
-        orderable: false,
-      },
-      {
-        data: "lastReceive",
-        orderable: false,
-        render: function (data, type, row) {
-          // 1. Kiểm tra null hoặc ngày mặc định
-          if (!data || data.startsWith("0001-01-01")) {
-            return '<span class="text-muted">-</span>';
-          }
-          // 2.Parse sang Date object rồi format lại
-          // Cách này tự động xử lý cả "T", "Z" và chuyển về giờ Việt Nam nếu cần
-          var date = new Date(data);
 
-          // Kiểm tra nếu là ngày hợp lệ
-          if (!isNaN(date.getTime())) {
-            // Trả về định dạng HH:mm:ss
-            return date.toLocaleString("vi-VN", {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: false,
-            });
-          }
-          //backup
-          var parts = data.toString().replace("T", " ").split(" ");
-          if (parts.length > 1) {
-            return parts[1].split(".")[0].replace("Z", "");
-          }
+  listLighthouses.forEach((lighthouse) => {
+    const marker = L.marker([lighthouse.latitude, lighthouse.longitude], {
+      icon: lighthouseIcon,
+    });
 
-          return data;
-        },
-      },
-    ],
-    dom: "lrt",
-    initComplete: function () {
-      const api = this.api();
-      api.columns.adjust(); // tính width sau khi load xong
-    },
+    marker.lighthouseData = lighthouse;
+    marker.addTo(lighthouseGroup);
   });
-  table.on("draw.dt", function () {
-    setTimeout(function () {
-      table.columns.adjust();
-    }, 50);
+  lighthouseGroup.addTo(map);
+  lighthouseGroup.on("click", function (e) {
+    console.log(e);
+    const marker = e.layer;
+    const data = marker.lighthouseData;
+    console.log("đang xem: ", data.name);
+    const markerPoint = map.latLngToContainerPoint(marker.getLatLng());
+    console.log(markerPoint);
+    $("#device-info-window")
+      .css({
+        top: markerPoint.y + 50 + "px",
+        left: markerPoint.x + 200 + "px",
+      })
+      .fadeIn();
+    stopBlink();
+    showDeviceWindow();
+    activeMarker = marker;
+    blinkInterval = setInterval(() => {
+      markerBlink(activeMarker);
+    }, 1000);
   });
-  $("#log-table tbody").on("click", "tr", function () {
-    // Lấy dữ liệu của hàng vừa click
-    var rowData = table.row(this).data();
-    console.log("Hàng được click:", rowData);
-    if (rowData && rowData.latitude && rowData.longitude) {
-      console.log("Đang focus vào tàu: " + rowData.mmsi);
 
-      //hàm bên Map để bay đến
-      if (typeof window.focusOnDevice === "function") {
-        window.focusOnDevice(
-          rowData.latitude,
-          rowData.longitude,
-          rowData.mmsi,
-          rowData.speed,
-          rowData.lastReceive,
-        );
-      }
-    } else {
-      console.warn("Dữ liệu tọa độ không hợp lệ hoặc thiết bị chưa có vị trí.");
-      Swal.fire({
-        icon: "warning",
-        title: "Không có tọa độ",
-        text: "Thiết bị này chưa cập nhật vị trí GPS.",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    }
+  makeDraggable(document.getElementById("device-info-window"));
+
+  $("#btn-close-window").click(function () {
+    $("#device-info-window").fadeOut();
+    stopBlink();
+  });
+  map.on("click", (e) => {
+    $("#device-info-window").fadeOut();
+    stopBlink();
+  });
+  map.on("movestart", () => {
+    $("#device-info-window").fadeOut();
+    stopBlink();
   });
 });
