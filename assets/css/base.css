@@ -38,6 +38,9 @@
   --primary-dark-color: #0b1d3a;
   --primary-light-color: #9ebaf3;
 
+  --btn-update-color: #3498db;
+  --btn-delete-color: #ff0000;
+
   --radius: 6px;
 }
 
@@ -71,19 +74,19 @@
   transition: background-color 0.3s ease;
 }
 
-#edit-btn {
-  background-color: #0066FF;
+.edit-btn {
+  background-color: var(--btn-update-color);
 }
 
-#edit-btn:hover {
-  background-color: #004CBE;
+.edit-btn:hover {
+  background-color: #143e5a;
 }
 
-#delete-btn {
-  background-color: #ff0000;
+.delete-btn {
+  background-color: var(--btn-delete-color);
 }
 
-#delete-btn:hover {
+.delete-btn:hover {
   background-color: #cc0000;
 }
 
@@ -193,4 +196,46 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  color: var(--primary-color);
+  font-weight: bold;
 }

@@ -88,10 +88,16 @@ const modal = $("#modal");
 const modalTitle = $("#modalTitle");
 const modalContent = $("#modalContent");
 const closeModal = $("#closedModal");
+const btnSaveCompany = $("#saveCompany");
+const btnUpdateCompany = $("#updateCompany");
+const btnAddCompany = $("#btnAddCompany");
+const btnExportExcel = $("#btnExportExcel");
 
 function openModal(title) {
   modalTitle.text(title);
   modal.show();
+  btnSaveCompany.show();
+  btnUpdateCompany.hide();
 }
 function closedModal() {
   modal.hide();
@@ -101,6 +107,81 @@ $(window).on("click", function (event) {
     closedModal();
   }
 });
+async function exportToExcel() {
+  $("#loading-screen").css("display", "flex");
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Danh sách công ty");
+    console.log(workbook);
+    //định nghĩa cột
+    worksheet.columns = [
+      {
+        header: "STT",
+        key: "stt",
+        width: 10,
+      },
+      { header: "Tên công ty", key: "name", width: 30 },
+      { header: "Địa chỉ", key: "address", width: 40 },
+      { header: "Email", key: "email", width: 30 },
+      { header: "Số điện thoạt", key: "phone", width: 20 },
+    ];
+    //thêm dữ liệu
+    datas.forEach((item, index) => {
+      const row = worksheet.addRow({
+        stt: index + 1,
+        name: item.name,
+        address: item.address,
+        email: item.email,
+        phone: item.phone,
+      });
+      row.getCell("stt").alignment = {
+        vertical: "middle",
+        horizontal: "center",
+      };
+    });
+
+    // định dạng
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "4F81BD" },
+      };
+      cell.alignment = { vertical: "middle", horizontal: "center" };
+    });
+
+    //kẻ bảng (border)
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+    await new Promise((resolve, reject) => setTimeout(resolve, 500));
+    //xuất file
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(new Blob([buffer]), "Danh_sach_cong_ty.xlsx");
+  } catch (err) {
+    console.error("Lỗi xuất file:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Lỗi xuất file",
+      text: "Đã có lỗi xảy ra khi xuất file Excel. Vui lòng thử lại.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  } finally {
+    // Ẩn loading dù thành công hay thất bại
+    $("#loading-screen").hide();
+  }
+}
 
 $(document).ready(function () {
   const table = $("#companyTable").DataTable({
@@ -126,8 +207,8 @@ $(document).ready(function () {
         title: "Hành động",
         render: function (data, type, row) {
           return `
-                    <button id="edit-btn" class="btn-action" data-id="${row.id}"><i class="fa-solid fa-pen-to-square"></i>Sửa</button>
-                    <button id="delete-btn" class="btn-action" data-id="${row.id}"><i class="fa-solid fa-trash"></i>Xóa</button>
+                    <button class="btn-action edit-btn" data-id="${row.id}"><i class="fa-solid fa-pen-to-square"></i>Sửa</button>
+                    <button class="btn-action delete-btn" data-id="${row.id}"><i class="fa-solid fa-trash"></i>Xóa</button>
                 `;
         },
         orderable: false,
@@ -136,10 +217,15 @@ $(document).ready(function () {
     ],
     dom: '<"top" >rt<"tool-bottom"ilp>',
     pagingType: "simple_numbers",
-    paginate: {
-      next: "Sau",
-      previous: "Trước",
+    language: {
+      paginate: {
+        next: "Sau",
+        previous: "Trước",
+      },
+      info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+      lengthMenu: "Hiển thị _MENU_ dòng",
     },
+
     initComplete: function () {
       this.api().columns.adjust();
     },
@@ -151,10 +237,61 @@ $(document).ready(function () {
   closeModal.off("click").on("click", function () {
     closedModal();
   });
-  $("#btnAddCompany").on("click", function () {
+  btnAddCompany.on("click", function () {
     openModal("Thêm mới công ty");
+    $("#NameCompany").val();
+    $("#AddressCompany").val();
+    $("#EmailCompany").val();
+    $("#Hotline").val();
   });
-  $("#edit-btn")
-    .off("click")
-    .on("click", function () {});
+
+  $("#companyTable tbody").on("click", ".edit-btn", function () {
+    openModal("Cập nhật thông tin công ty");
+    btnSaveCompany.hide();
+    btnUpdateCompany.show();
+    const rowData = table.row($(this).closest("tr")).data();
+    console.log("Dữ liệu công ty cần sửa:", rowData);
+    $("#NameCompany").val(rowData.name);
+    $("#AddressCompany").val(rowData.address);
+    $("#EmailCompany").val(rowData.email);
+    $("#Hotline").val(rowData.phone);
+  });
+  $("#companyTable tbody").on("click", ".delete-btn", function () {
+    const rowData = table.row($(this).closest("tr")).data();
+    const companyId = rowData.id;
+    const companyName = rowData.name;
+    Swal.fire({
+      title: "Xác nhận xóa công ty",
+      text: `Bạn có chắc chắn muốn xóa công ty "${companyName}" không ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //logic call api xóa công ty
+        Swal.fire({
+          icon: "success",
+          title: "Xóa thành công!",
+          text: "Xóa công ty hoàn tất.",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+        //reload bảng
+        //table.ajax.reload(null, false);
+      }
+    });
+  });
+
+  $("#searchInput").on("keyup", function () {
+    table.column(1).search(this.value).draw();
+  });
+
+  btnExportExcel.on("click", async function () {
+    btnExportExcel.prop("disabled", true);
+    await exportToExcel();
+    btnExportExcel.prop("disabled", false);
+  });
 });

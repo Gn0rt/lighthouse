@@ -72,11 +72,13 @@ const datas = [
     lastReceive: "2024-06-01T12:34:56Z",
   },
 ];
+let resizeTimeout;
+
 $(document).ready(function () {
   const table = $("#log-table").DataTable({
     data: datas,
     searching: true,
-    autoWidth: false,
+    autoWidth: true,
     scrollY: "50vh",
     scrollX: true,
     scrollCollapse: true,
@@ -140,6 +142,13 @@ $(document).ready(function () {
     setTimeout(function () {
       table.columns.adjust();
     }, 50);
+  });
+  $(window).on("resize", function () {
+    clearTimeout(resizeTimeout);
+
+    resizeTimeout = setTimeout(function () {
+      table.columns.adjust().draw(false);
+    }, 200);
   });
   // $("#log-table tbody").on("click", "tr", function () {
   //   // Lấy dữ liệu của hàng vừa click
