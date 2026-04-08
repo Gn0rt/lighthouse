@@ -9,36 +9,10 @@ let lighthouseIcon = L.icon({
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
-const listLighthouses = [
-  {
-    id: 1,
-    name: "Hải đăng 1",
-    latitude: 15.422884140443102,
-    longitude: 109.14396262587107,
-  },
-  {
-    id: 2,
-    name: "Hải đăng 2",
-    latitude: 15.438623,
-    longitude: 109.189339,
-  },
-  {
-    id: 3,
-    name: "Hải đăng 3",
-    latitude: 15.328724,
-    longitude: 109.187622,
-  },
-  {
-    id: 4,
-    name: "Hải đăng 4",
-    latitude: 15.366467,
-    longitude: 109.287872,
-  },
-];
+
 function showDeviceWindow() {
   $("#device-info-window").fadeIn();
 }
-
 function makeDraggable(elmnt) {
   var pos1 = 0,
     pos2 = 0,
@@ -93,6 +67,63 @@ function stopBlink() {
     blinkInterval = null;
   }
 }
+
+window.lighthouseMakers = function (datas) {
+  lighthouseGroup.clearLayers();
+  datas.forEach((item) => {
+    if (item.latitude && item.longitude) {
+      const marker = L.marker([item.latitude, item.longitude], {
+        icon: lighthouseIcon,
+      });
+      marker.lighthouseData = item;
+      marker.addTo(lighthouseGroup);
+    }
+  });
+};
+function handleMarkerClick(marker) {
+  const data = marker.lighthouseData;
+  if (activeMarker) {
+    activeMarker.setOpacity(1);
+  }
+  const markerPoint = map.latLngToContainerPoint(marker.getLatLng());
+  $("#device-info-window")
+    .css({
+      top: markerPoint.y + 50 + "px",
+      left: markerPoint.x + 200 + "px",
+    })
+    .fadeIn();
+  $("#win-name").text(data.name || "N/A");
+  $("#win-mmsi").text(data.mmsi || "N/A");
+  stopBlink();
+  activeMarker = marker;
+  blinkInterval = setInterval(() => markerBlink(activeMarker), 1000);
+}
+
+window.focusOnDevice = function (lat, lng, mmsi, lastReceive) {
+  if (!map) return;
+  let targetMarker = null;
+  lighthouseGroup.eachLayer(function (layer) {
+    if (
+      layer.lighthouseData &&
+      String(layer.lighthouseData.mmsi) === String(mmsi)
+    ) {
+      targetMarker = layer;
+    }
+  });
+  if (!targetMarker) return;
+  console.log("Tìm thấy marker:", targetMarker);
+  map.off("moveend");
+  $("#device-info-window").fadeOut();
+  stopBlink();
+  map.once("moveend", () => {
+    handleMarkerClick(targetMarker);
+  });
+
+  map.flyTo([lat, lng], 15, {
+    duration: 0.5,
+    easeLinearity: 0.25,
+  });
+};
 $(document).ready(function () {
   map = L.map("map").setView([15.422884140443102, 109.14396262587107], 13);
 
@@ -101,34 +132,22 @@ $(document).ready(function () {
     subdomains: ["mt0", "mt1", "mt2", "mt3"],
   }).addTo(map);
 
-  listLighthouses.forEach((lighthouse) => {
-    const marker = L.marker([lighthouse.latitude, lighthouse.longitude], {
-      icon: lighthouseIcon,
-    });
-
-    marker.lighthouseData = lighthouse;
-    marker.addTo(lighthouseGroup);
-  });
   lighthouseGroup.addTo(map);
+
   lighthouseGroup.on("click", function (e) {
-    console.log(e);
     const marker = e.layer;
-    const data = marker.lighthouseData;
-    console.log("đang xem: ", data.name);
-    const markerPoint = map.latLngToContainerPoint(marker.getLatLng());
-    console.log(markerPoint);
-    $("#device-info-window")
-      .css({
-        top: markerPoint.y + 50 + "px",
-        left: markerPoint.x + 200 + "px",
-      })
-      .fadeIn();
+    const latlng = marker.getLatLng();
+    // hủy event cũ
+    map.off("moveend");
+    $("#device-info-window").fadeOut();
     stopBlink();
-    showDeviceWindow();
-    activeMarker = marker;
-    blinkInterval = setInterval(() => {
-      markerBlink(activeMarker);
-    }, 1000);
+    map.once("moveend", () => {
+      handleMarkerClick(marker);
+    });
+    map.flyTo(latlng, 15, {
+      duration: 0.5,
+      easeLinearity: 0.25,
+    });
   });
 
   makeDraggable(document.getElementById("device-info-window"));
@@ -139,10 +158,11 @@ $(document).ready(function () {
   });
   map.on("click", (e) => {
     $("#device-info-window").fadeOut();
+    console.log(e.latlng);
     stopBlink();
   });
-  map.on("movestart", () => {
-    $("#device-info-window").fadeOut();
-    stopBlink();
-  });
+  // map.on("movestart", () => {
+  //   $("#device-info-window").fadeOut();
+  //   stopBlink();
+  // });
 });
