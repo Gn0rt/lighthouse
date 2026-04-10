@@ -51,9 +51,31 @@ const datas = [
   },
 ];
 let userTable;
+const modal = $("#modal");
+const modalTitle = $("#modalTitle");
+const modalContent = $("#modalContent");
+const closeModal = $("#closedModal");
+const btnSaveUser = $("#saveUser");
+const btnUpdateUser = $("#updateUser");
+const btnAddUser = $("#btnAddUser");
+const btnExportExcel = $("#btnExportExcel");
 function loadDataUser() {
   ViewUserTable(datas);
 }
+function openModal(title) {
+  modalTitle.text(title);
+  modal.show();
+  btnSaveUser.show();
+  btnUpdateUser.hide();
+}
+function closedModal() {
+  modal.hide();
+}
+$(window).on("click", function (event) {
+  if ($(event.target).is("#modal")) {
+    closedModal();
+  }
+});
 function ViewUserTable(data) {
   userTable = $("#UserTable").DataTable({
     data: data,
@@ -74,7 +96,6 @@ function ViewUserTable(data) {
       { data: "Password", title: "Mật khẩu", orderable: false },
       { data: "Phone", title: "SDT", orderable: false },
       { data: "Email", title: "Email", orderable: false },
-      { data: "Phone", title: "SDT", orderable: false },
       { data: "MaXN", title: "Công ty", orderable: false },
       { data: "CreatedAt", title: "Ngày tạo", orderable: false },
       {
@@ -109,4 +130,20 @@ function ViewUserTable(data) {
 
 $(document).ready(function () {
   loadDataUser();
+
+  $(window).on("resize", function () {
+    userTable.columns.adjust().draw();
+  });
+  closeModal.off("click").on("click", function () {
+    closedModal();
+  });
+  btnAddUser.on("click", function () {
+    openModal("Thêm mới người dùng");
+    $("#FullName").val();
+    $("#User").val();
+    $("#Password").val();
+    $("#Hotline").val();
+    $("#Email").val();
+    $("#Company").val();
+  });
 });
