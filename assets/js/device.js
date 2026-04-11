@@ -1,72 +1,57 @@
 const datas = [
   {
     id: 1,
-    FullName: "Bùi Thế Trọng",
-    Username: "trongbt",
-    Password: "123456",
-    Phone: "0123456789",
-    Email: "trongbt@gmail.com",
-    MaXN: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
-    CreatedAt: "2026-04-08 05:00:00",
+    mmsi: "1234561",
+    name: "1234561",
+    maxn: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
+    createdAt: "2026-04-08 05:00:00",
   },
   {
     id: 2,
-    FullName: "Bùi Thế Phú",
-    Username: "trongbt",
-    Password: "123456",
-    Phone: "0123456789",
-    Email: "trongbt@gmail.com",
-    MaXN: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
-    CreatedAt: "2026-04-08 05:00:00",
+    mmsi: "123456122",
+    name: "123456122",
+    maxn: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
+    createdAt: "2026-04-08 05:00:00",
   },
   {
     id: 3,
-    FullName: "Bùi Thế Khá",
-    Username: "trongbt",
-    Password: "123456",
-    Phone: "0123456789",
-    Email: "trongbt@gmail.com",
-    MaXN: "Công ty cổ phần thiết bị báo hiệu Hàng Hải Miền Bắc",
-    CreatedAt: "2026-04-08 05:00:00",
+    mmsi: "123456133",
+    name: "123456133",
+    maxn: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
+    createdAt: "2026-04-08 05:00:00",
   },
   {
     id: 4,
-    FullName: "Bùi Thế Hùng",
-    Username: "trongbt",
-    Password: "123456",
-    Phone: "0123456789",
-    Email: "trongbt@gmail.com",
-    MaXN: "Công ty cổ phần thiết bị báo hiệu Hàng Hải Miền Bắc",
-    CreatedAt: "2026-04-08 05:00:00",
+    mmsi: "123456144",
+    name: "123456144",
+    maxn: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
+    createdAt: "2026-04-08 05:00:00",
   },
   {
     id: 5,
-    FullName: "Bùi Thế Nam",
-    Username: "trongbt",
-    Password: "123456",
-    Phone: "0123456789",
-    Email: "trongbt@gmail.com",
-    MaXN: "Công ty HMS",
-    CreatedAt: "2026-04-08 05:00:00",
+    mmsi: "123456155",
+    name: "123456155",
+    maxn: "Công ty TNHH Giải Pháp Và Phát Triển Công Nghệ HMS",
+    createdAt: "2026-04-08 05:00:00",
   },
 ];
-let userTable;
+let deviceTable;
 const modal = $("#modal");
 const modalTitle = $("#modalTitle");
 const modalContent = $("#modalContent");
 const closeModal = $("#closedModal");
-const btnSaveUser = $("#saveUser");
-const btnUpdateUser = $("#updateUser");
-const btnAddUser = $("#btnAddUser");
+const btnSaveDevice = $("#saveDevice");
+const btnUpdateDevice = $("#updateDevice");
+const btnAddDevice = $("#btnAddDevice");
 const btnExportExcel = $("#btnExportExcel");
-function loadDataUser() {
-  ViewUserTable(datas);
+function loadDataDevice() {
+  ViewDeviceTable(datas);
 }
 function openModal(title) {
   modalTitle.text(title);
   modal.show();
-  btnSaveUser.show();
-  btnUpdateUser.hide();
+  btnSaveDevice.show();
+  btnUpdateDevice.hide();
 }
 function closedModal() {
   modal.hide();
@@ -76,12 +61,11 @@ $(window).on("click", function (event) {
     closedModal();
   }
 });
-
 async function exportToExcel() {
   $("#loading-screen").css("display", "flex");
   try {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Danh sách người dùng");
+    const worksheet = workbook.addWorksheet("Danh sách thiết bị");
     worksheet.columns = [
       {
         header: "STT",
@@ -89,27 +73,21 @@ async function exportToExcel() {
         width: 10,
       },
       {
-        header: "Họ Tên",
-        key: "FullName",
+        header: "MMSI",
+        key: "mmsi",
         width: 30,
       },
-      { header: "Tài khoản", key: "Username", width: 20 },
-      { header: "Mật khẩu", key: "Password", width: 10 },
-      { header: "SDT", key: "Phone", width: 20 },
-      { header: "Email", key: "Email", width: 20 },
-      { header: "Công ty", key: "MaXN", width: 50 },
-      { header: "Ngày tạo", key: "CreatedAt", width: 30 },
+      { header: "Tên thiết bị", key: "name", width: 20 },
+      { header: "Công ty", key: "maxn", width: 50 },
+      { header: "Ngày tạo", key: "createdAt", width: 30 },
     ];
     datas.forEach((item, index) => {
       const row = worksheet.addRow({
         stt: index + 1,
-        FullName: item.FullName,
-        Username: item.Username,
-        Password: item.Password,
-        Phone: item.Phone,
-        Email: item.Email,
-        MaXN: item.MaXN,
-        CreatedAt: item.CreatedAt,
+        mmsi: item.mmsi,
+        name: item.name,
+        maxn: item.maxn,
+        createdAt: item.createdAt,
       });
       row.getCell("stt").alignment = {
         vertical: "middle",
@@ -139,7 +117,7 @@ async function exportToExcel() {
     });
     await new Promise((resolve, reject) => setTimeout(resolve, 500));
     const buffer = await workbook.xlsx.writeBuffer();
-    saveAs(new Blob([buffer]), "Danh_sach_nguoi_dung.xlsx");
+    saveAs(new Blob([buffer]), "Danh_sach_thiet_bi.xlsx");
   } catch (err) {
     console.error("Lỗi xuất file:", err);
     Swal.fire({
@@ -156,9 +134,8 @@ async function exportToExcel() {
     $("#loading-screen").hide();
   }
 }
-
-function ViewUserTable(data) {
-  userTable = $("#UserTable").DataTable({
+function ViewDeviceTable(data) {
+  deviceTable = $("#DeviceTable").DataTable({
     data: data,
     searching: true,
     autoWidth: true,
@@ -172,13 +149,10 @@ function ViewUserTable(data) {
         },
         width: "3%",
       },
-      { data: "FullName", title: "Họ Tên", orderable: false, width: "15%" },
-      { data: "Username", title: "Tài khoản", orderable: false, width: "6%" },
-      { data: "Password", title: "Mật khẩu", orderable: false, width: "6%" },
-      { data: "Phone", title: "SDT", orderable: false, width: "8%" },
-      { data: "Email", title: "Email", orderable: false, width: "12%" },
-      { data: "MaXN", title: "Công ty", orderable: false },
-      { data: "CreatedAt", title: "Ngày tạo", orderable: false, width: "10%" },
+      { data: "mmsi", title: "MMSI", orderable: false, width: "7%" },
+      { data: "name", title: "Tên thiết bị", orderable: false, width: "7%" },
+      { data: "maxn", title: "Công ty", orderable: false, width: "15%" },
+      { data: "createdAt", title: "Ngày tạo", orderable: false, width: "7%" },
       {
         data: null,
         title: "Hành động",
@@ -210,44 +184,35 @@ function ViewUserTable(data) {
 }
 
 $(document).ready(function () {
-  loadDataUser();
-
+  loadDataDevice();
   $(window).on("resize", function () {
-    userTable.columns.adjust().draw();
+    deviceTable.columns.adjust().draw();
   });
   closeModal.off("click").on("click", function () {
     closedModal();
   });
-  btnAddUser.on("click", function () {
-    openModal("Thêm mới người dùng");
-    $("#FullName").val("");
-    $("#User").val("");
-    $("#Password").val("");
-    $("#Hotline").val("");
-    $("#Email").val("");
+  btnAddDevice.on("click", function () {
+    openModal("Thêm mới thiết bị");
+    $("#MMSI").val("");
+    $("#NameDevice").val("");
     $("#Company").val("");
   });
-
-  $("#UserTable tbody").on("click", ".edit-btn", function () {
+  $("#DeviceTable tbody").on("click", ".edit-btn", function () {
     openModal("Cập nhật thông tin công ty");
-    btnSaveUser.hide();
-    btnUpdateUser.show();
-    const rowData = userTable.row($(this).closest("tr")).data();
-    $("#FullName").val(rowData.FullName);
-    $("#User").val(rowData.Username);
-    $("#Password").val(rowData.Password);
-    $("#Hotline").val(rowData.Phone);
-    $("#Email").val(rowData.Email);
-    $("#Company").val(rowData.MaXN);
+    btnSaveDevice.hide();
+    btnUpdateDevice.show();
+    const rowData = deviceTable.row($(this).closest("tr")).data();
+    $("#MMSI").val(rowData.mmsi);
+    $("#NameDevice").val(rowData.name);
+    $("#Company").val(rowData.maxn);
   });
-
-  $("#UserTable tbody").on("click", ".delete-btn", function () {
-    const rowData = userTable.row($(this).closest("tr")).data();
-    const userId = rowData.id;
-    const userName = rowData.Username;
+  $("#DeviceTable tbody").on("click", ".delete-btn", function () {
+    const rowData = deviceTable.row($(this).closest("tr")).data();
+    const deviceId = rowData.id;
+    const deviceName = rowData.name;
     Swal.fire({
-      title: "Xác nhận xóa người dùng ?",
-      text: `Bạn có chắc chắn muốn xóa tài khoản "${userName}" không ?`,
+      title: "Xác nhận xóa thiết bị ?",
+      text: `Bạn có chắc chắn muốn xóa thiết bị "${deviceName}" không ?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -257,14 +222,37 @@ $(document).ready(function () {
     }).then((result) => {
       if (result.isConfirmed) {
         $("#loading-screen").css("display", "flex");
-
         //logic call api xóa công ty
+        // $.ajax({
+        //   url: "",
+        //   type: "POST",
+        //   data: "",
+        //   success: function () {
+        //     $("#loading-screen").css("display", "none");
+        //     Swal.fire({
+        //       icon: "success",
+        //       title: "Xóa thành công!",
+        //       timer: 1200,
+        //       showConfirmButton: false,
+        //     });
+        //     deviceTable.ajax.reload(null, false);
+        //   },
+        //   error: function () {
+        //     $("#loading-screen").hide();
+
+        //     Swal.fire({
+        //       icon: "error",
+        //       title: "Lỗi",
+        //       text: "Không thể xóa thiết bị!",
+        //     });
+        //   },
+        // });
         setTimeout(() => {
           $("#loading-screen").css("display", "none");
           Swal.fire({
             icon: "success",
             title: "Xóa thành công!",
-            text: "Xóa người dùng hoàn tất.",
+            text: "Xóa thiết bị hoàn tất.",
             timer: 1200,
             showConfirmButton: false,
           });
@@ -275,12 +263,11 @@ $(document).ready(function () {
       }
     });
   });
-
   $("#searchInput").on("keyup", function () {
-    userTable.column(1).search(this.value).draw();
+    deviceTable.column(1).search(this.value).draw();
   });
 
-  btnUpdateUser.off("click").on("click", function (e) {
+  btnUpdateDevice.off("click").on("click", function (e) {
     e.preventDefault();
     let isValid = true; // thay bằng validate thật
 
@@ -293,7 +280,7 @@ $(document).ready(function () {
       return;
     }
     $("#loading-screen").css("display", "flex");
-    btnUpdateUser.prop("disabled", true);
+    btnUpdateDevice.prop("disabled", true);
     //logic call api, setimeout để giả lập
     // $.ajax({
     //   url: "",
@@ -322,7 +309,7 @@ $(document).ready(function () {
     // });
     setTimeout(() => {
       $("#loading-screen").css("display", "none");
-      btnUpdateUser.prop("disabled", false);
+      btnUpdateDevice.prop("disabled", false);
       modal.hide();
 
       Swal.fire({
@@ -333,7 +320,7 @@ $(document).ready(function () {
         showConfirmButton: false,
       });
 
-      // reload bảng
+      // 👉 reload bảng nếu cần
       // table.ajax.reload(null, false);
     }, 1000);
   });

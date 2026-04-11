@@ -5,7 +5,10 @@
   width: 100%;
   table-layout: fixed;
 }
-
+.tableLayout td {
+  white-space: normal !important;
+  word-break: break-word;
+}
 td,
 th {
   border: 1px solid #ccc;

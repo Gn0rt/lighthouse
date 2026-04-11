@@ -239,10 +239,10 @@ $(document).ready(function () {
   });
   btnAddCompany.on("click", function () {
     openModal("Thêm mới công ty");
-    $("#NameCompany").val();
-    $("#AddressCompany").val();
-    $("#EmailCompany").val();
-    $("#Hotline").val();
+    $("#NameCompany").val("");
+    $("#AddressCompany").val("");
+    $("#EmailCompany").val("");
+    $("#Hotline").val("");
   });
 
   $("#companyTable tbody").on("click", ".edit-btn", function () {
@@ -271,16 +271,22 @@ $(document).ready(function () {
       cancelButtonText: "Hủy",
     }).then((result) => {
       if (result.isConfirmed) {
+        $("#loading-screen").css("display", "flex");
+
         //logic call api xóa công ty
-        Swal.fire({
-          icon: "success",
-          title: "Xóa thành công!",
-          text: "Xóa công ty hoàn tất.",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-        //reload bảng
-        //table.ajax.reload(null, false);
+        setTimeout(() => {
+          $("#loading-screen").css("display", "none");
+          Swal.fire({
+            icon: "success",
+            title: "Xóa thành công!",
+            text: "Xóa công ty hoàn tất.",
+            timer: 1200,
+            showConfirmButton: false,
+          });
+
+          // reload bảng
+          // deviceTable.ajax.reload(null, false);
+        }, 1000);
       }
     });
   });
@@ -289,6 +295,63 @@ $(document).ready(function () {
     table.column(1).search(this.value).draw();
   });
 
+  btnUpdateCompany.off("click").on("click", function (e) {
+    e.preventDefault();
+    let isValid = true; // thay bằng validate thật
+
+    if (!isValid) {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: "Vui lòng nhập đầy đủ thông tin!",
+      });
+      return;
+    }
+    $("#loading-screen").css("display", "flex");
+    btnUpdateCompany.prop("disabled", true);
+    //logic call api, setimeout để giả lập
+    // $.ajax({
+    //   url: "",
+    //   type: "POST",
+    //   data: "",
+    //   success: function () {
+    //     $("#loading-screen").hide();
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Lưu thành công!",
+    //       timer: 1500,
+    //       showConfirmButton: false,
+    //     });
+
+    //     table.ajax.reload(null, false);
+    //   },
+    //   error: function () {
+    //     $("#loading-screen").hide();
+
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Lỗi",
+    //       text: "Không thể lưu dữ liệu!",
+    //     });
+    //   },
+    // });
+    setTimeout(() => {
+      $("#loading-screen").css("display", "none");
+      btnUpdateCompany.prop("disabled", false);
+      modal.hide();
+
+      Swal.fire({
+        icon: "success",
+        title: "Lưu thành công!",
+        text: "Dữ liệu đã được cập nhật.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      // 👉 reload bảng nếu cần
+      // table.ajax.reload(null, false);
+    }, 1000);
+  });
   btnExportExcel.on("click", async function () {
     btnExportExcel.prop("disabled", true);
     await exportToExcel();
