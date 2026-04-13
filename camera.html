@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giám sát Camera - Lighthouse</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <link rel="stylesheet" href="./assets/css/base.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/camera.css">
+</head>
+<body>
+    <header id="header">
+        <div class="logo">
+            <a href="index.html">
+                <span>lighthouse</span>
+            </a>
+        </div>
+
+        <div class="menu">
+            <ul class="lists-menu">
+                <li class="item item-sub-menu">
+                    <a href="#">Quản trị</a>
+                    <ul class="sub-menu">
+                        <li class="sub-item"><a href="company.html">Quản trị công ty</a></li>
+                        <li class="sub-item"><a href="user.html">Quản trị người dùng</a></li>
+                        <li class="sub-item"><a href="device.html">Quản trị thiết bị</a></li>
+                    </ul>
+                </li>
+                <li class="item item-sub-menu">
+                    <a href="#">Báo cáo</a>
+                    <ul class="sub-menu">
+                        <li class="sub-item"><a href="#">Báo cáo sự kiện</a></li>
+                    </ul>
+                </li>
+                <li class="item item-sub-menu">
+                    <a href="camera.html">Xem video trực tuyến</a>
+                </li>
+            </ul>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-right: 10px">
+            <div style="display: flex; align-items: center; margin: 10px">
+                <div class="account">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div style="color: white">
+                    <strong>[-Name-]</strong>
+                </div>
+            </div>
+            <a id="btnLogout" class="logout" href="login.html">Đăng xuất</a>
+        </div>
+    </header>
+
+    <div id="content">
+        <aside id="camera-sidebar">
+            <h3 class="sidebar-title">Danh sách Camera</h3>
+            <div class="search-box">
+                <input type="text" id="searchCamera" class="input-search" placeholder="Tìm kiếm camera..." style="width: 100%;">
+            </div>
+            <div id="camera-list" class="camera-list">
+                <!-- Camera items will be rendered here -->
+            </div>
+        </aside>
+
+        <main id="camera-main">
+            <div class="grid-controls">
+                <button class="btn-layout" data-layout="1x1">1x1</button>
+                <button class="btn-layout active" data-layout="2x2">2x2</button>
+                <button class="btn-layout" data-layout="3x3">3x3</button>
+            </div>
+            <div id="camera-grid" class="camera-grid layout-2x2">
+                <!-- Video slots will be generated here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="./assets/js/camera.js"></script>
+</body>
+</html>
